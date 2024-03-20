@@ -1,5 +1,5 @@
 mod maching_engine;
-use maching_engine::orderbook::{Order, Orderbook,BidOrAsk};
+use maching_engine::{engine::{MatchingEngine, TradingPair}, orderbook::{Order, Orderbook,BidOrAsk}};
 
 fn main() {
     // let mut limit = Limit::new(65.3);
@@ -12,5 +12,11 @@ fn main() {
 
     let sell_order = Order::new(BidOrAsk::Ask,6.5);
     orderbook.add_order(20.0, sell_order);
-    println!("{:?} ",orderbook);
+    // println!("{:?} ",orderbook);
+
+    let mut engine = MatchingEngine::new();
+    let pair = TradingPair::new("BTC".to_string(), "USDT".to_string());
+    engine.add_new_market(pair.clone());
+    let buy_order = Order::new(BidOrAsk::Bid, 6.5);
+    engine.place_limit_order(pair, 10.000, buy_order).unwrap();
 }
